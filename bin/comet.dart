@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:args/command_runner.dart';
 import 'package:chalkdart/chalk.dart';
 import 'package:chalkdart/chalk_x11.dart';
+
 const String version = '0.0.1';
 
 ArgParser buildParser() {
@@ -30,21 +32,20 @@ ArgParser buildParser() {
       abbr: "H",
       negatable: false,
       help: 'More welcoming version of help for fun',
-    )
-    ..addCommand(
-      "init"
-      );
+    );
 }
 
 void printUsage(ArgParser argParser) {
-  print(chalk.purple.bold('To use comet do [comet init] to get started!' ));
+  print(chalk.purple.bold('To use comet do [comet init] to get started!'));
   print(argParser.usage);
-  }
+}
 
 void main(List<String> arguments) {
   final ArgParser argParser = buildParser();
   try {
-    final ArgResults results = argParser.parse(arguments,);
+    final ArgResults results = argParser.parse(
+      arguments,
+    );
     bool verbose = false;
 
     // Process the parsed arguments.
@@ -53,7 +54,10 @@ void main(List<String> arguments) {
       return;
     }
     if (results.wasParsed('version')) {
-      print(chalk.purple.bold("You are running Comet version: $version, Run comet --help to learn more!"));
+      // ignore: prefer_interpolation_to_compose_strings
+      print(chalk.purple.bold(
+              "You are running Comet version: $version, Run comet --help to learn more! \n") +
+          "If you arent sure that comet is up to date, check the git repo at ${chalk.green.italic.bold("https://github.com/Starlight-Industries/Comet")}");
       return;
     }
     if (results.wasParsed('verbose')) {
@@ -72,11 +76,14 @@ void main(List<String> arguments) {
     // Print usage information if an invalid argument was provided.
     print("${chalk.red.bold.underline(e.message)}\n");
     printUsage(argParser);
+  } on UsageException catch (e) {
+    print("${chalk.red.bold.underline(e.message)}\n");
+    printUsage(argParser);
   }
 }
 
 void init() {
-for(int i = 0; i < stdout.terminalLines; i++) {
-  stdout.writeln();
-}
+  for (int i = 0; i < stdout.terminalLines; i++) {
+    stdout.writeln();
+  }
 }

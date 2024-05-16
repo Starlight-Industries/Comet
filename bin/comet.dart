@@ -82,8 +82,4 @@ void main(List<String> arguments) {
   }
 }
 
-void init() {
-  for (int i = 0; i < stdout.terminalLines; i++) {
-    stdout.writeln();
-  }
-}
+void init() {}

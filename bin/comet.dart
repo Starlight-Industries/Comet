@@ -14,6 +14,12 @@ ArgParser buildParser() {
       help: 'Print this usage information.',
     )
     ..addFlag(
+      'men',
+      abbr: 'm',
+      negatable: false,
+      help: 'men',
+    )
+    ..addFlag(
       'verbose',
       abbr: 'V',
       negatable: false,

@@ -1,5 +1,5 @@
 use core::str;
-use std::{option, path::PathBuf};
+use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 
@@ -31,6 +31,11 @@ enum Commands {
     Install {
         //#[arg(short,long)]
         package: Option<String>
+    },
+    Remove {
+        package: Option<String>,
+        #[arg(short, long)]
+        force: bool
     }
 }
 
@@ -68,6 +73,15 @@ fn main() {
         }
         Some(Commands::Install { package: Some(package) }) => {
             print!("your package is: {}",package)
+        }
+        Some(Commands::Remove { package: None, force: _ }) => {
+            print!("No package to remove")
+        }
+        Some(Commands::Remove { package: Some(package), force }) => {
+            print!("Removing {}",package);
+            if *force {
+                print!("\nForce flag specified, Removing...")
+            }
         }
         None => {}
     }

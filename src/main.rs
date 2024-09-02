@@ -23,11 +23,15 @@ enum Commands {
     },
     Install {
         package: Option<String>,
+        #[arg(short, long)]
+        force: bool,
     },
     Remove {
         package: Option<String>,
         #[arg(short, long)]
         force: bool,
+        #[arg(short, long,action)]
+        include_deps: Option<bool>
     },
 }
 
@@ -56,27 +60,36 @@ fn main() {
                 println!("Not printing testing lists...");
             }
         }
-        Some(Commands::Install { package: None }) => {
+        Some(Commands::Install { 
+            package: None,
+            force: _ 
+        }) => {
             print!("Package must be specified!");
         }
         Some(Commands::Install {
             package: Some(ref package),
+            force, 
         }) => {
-            print!("your package is: {}", package)
+            println!("your package is: {}", package);
+            if force {
+                println!("Installing package regaurdless of conflicts. Use with caution!")
+            }
         }
         Some(Commands::Remove {
             package: None,
             force: _,
+            include_deps: _,
         }) => {
             print!("No package to remove")
         }
         Some(Commands::Remove {
             package: Some(ref package),
             force,
+            include_deps: _,
         }) => {
             print!("Removing {}", package);
             if force {
-                print!("\nForce flag specified, Removing...")
+                println!("Force flag specified, Removing...")
             }
         }
         None => {}

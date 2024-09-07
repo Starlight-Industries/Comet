@@ -1,97 +1,35 @@
-use std::path::PathBuf;
-
-use clap::{Parser, Subcommand};
-
-#[derive(Parser)]
-#[command(version, about, long_about = None)]
-struct Cli {
-    #[arg(short, long, value_name = "FILE")]
-    config: Option<PathBuf>,
-
-    #[arg(short, long, action = clap::ArgAction::Count)]
-    debug: u8,
-
-    #[command(subcommand)]
-    command: Option<Commands>,
-}
-
-#[derive(Subcommand)]
-enum Commands {
-    Test {
-        #[arg(short, long)]
-        list: bool,
-    },
-    Install {
-        package: Option<String>,
-        #[arg(short, long)]
-        force: bool,
-    },
-    Remove {
-        package: Option<String>,
-        #[arg(short, long)]
-        force: bool,
-        #[arg(short, long,action)]
-        include_deps: Option<bool>
-    },
-}
+mod cli;
+use versions::Versioning;
 
 fn main() {
-    let cli = Cli::parse();
+    let cli = cli::Cli::parse();
 
-    if let Some(ref config_path) = cli.config {
-        println!("Value for config: {config_path:?}");
-    }
-
-    println!(
-        "{}",
-        match cli.debug {
-            0 => "Debug mode is off",
-            1 => "Debug mode is kind of on",
-            2 => "Debug mode is on",
-            _ => "Don't be crazy",
-        }
-    );
-
-    match cli.command {
-        Some(Commands::Test { list }) => {
-            if list {
-                println!("Printing testing lists...");
-            } else {
-                println!("Not printing testing lists...");
+    use cli::Command as C;
+    for command in cli.commands {
+        match command {
+            C::Install { package } => {
+                println!(
+                    "Install Package: {}={}",
+                    package.name,
+                    package
+                        .version
+                        .unwrap_or_else(|| Versioning::new("*").unwrap())
+                )
             }
-        }
-        Some(Commands::Install { 
-            package: None,
-            force: _ 
-        }) => {
-            print!("Package must be specified!");
-        }
-        Some(Commands::Install {
-            package: Some(ref package),
-            force, 
-        }) => {
-            println!("your package is: {}", package);
-            if force {
-                println!("Installing package regaurdless of conflicts. Use with caution!")
+            C::Remove { package, force, .. } => {
+                println!(
+                    "Remove Package: {}={}, Force: {force}",
+                    package.name,
+                    package
+                        .version
+                        .unwrap_or_else(|| Versioning::new("*").unwrap())
+                )
             }
-        }
-        Some(Commands::Remove {
-            package: None,
-            force: _,
-            include_deps: _,
-        }) => {
-            print!("No package to remove")
-        }
-        Some(Commands::Remove {
-            package: Some(ref package),
-            force,
-            include_deps: _,
-        }) => {
-            print!("Removing {}", package);
-            if force {
-                println!("Force flag specified, Removing...")
+            C::Sync => {
+                println!("Sync DB")
             }
+            #[allow(unreachable_patterns)]
+            _ => {}
         }
-        None => {}
     }
 }

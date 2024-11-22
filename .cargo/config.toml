@@ -1,0 +1,2 @@
+[alias]
+comet = "run -q -j99 --"

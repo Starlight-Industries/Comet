@@ -1,0 +1,18 @@
+[package]
+name = "blender"
+version = "0.1.0"
+dependencies = ["libc"]
+optional_dependencie = ["rocm"]
+license = "MIT"
+
+[metadata]
+description = ""
+display_name = ""
+authors = ["contributors@blender.org"]
+documentation = ""
+repository_url = ""
+tags = [
+    "3D",
+    "Productivity",
+    #"Game engine"
+]

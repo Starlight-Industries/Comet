@@ -1,6 +1,5 @@
 #[global_allocator]
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
-#[macro_use] extern crate rocket;
 use anyhow::{Ok, Result};
 use cli::run_cli;
 pub mod workspace;
@@ -10,7 +9,7 @@ pub mod cli;
 
 
 
-fn main_run() -> Result<()> {
+fn main() -> Result<()> {
     //let path = get_working_dir()?;
     //println!("{}",path.display());
     //first_run()?;
@@ -20,13 +19,3 @@ fn main_run() -> Result<()> {
     Ok(())
 }
 
-#[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
-}
-
-#[launch]
-fn rocket() -> _ {
-    main_run().ok();
-    rocket::build().mount("/", routes![index])
-}

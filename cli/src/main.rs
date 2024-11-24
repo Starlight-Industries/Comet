@@ -1,11 +1,8 @@
 #[global_allocator]
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 #[macro_use] extern crate rocket;
-use std::collections::HashMap;
 use anyhow::{Ok, Result};
 use cli::run_cli;
-use serde::{Deserialize, Serialize};
-use workspace::{first_run, get_data_dir, get_working_dir};
 pub mod workspace;
 pub mod config;
 pub mod package;

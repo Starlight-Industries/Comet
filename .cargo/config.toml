@@ -1,3 +1,3 @@
 [alias]
-comet = "run --bin comet -q -j99 --"
-host = "run --bin cli -q -j99 --"
+comet = "run --bin comet -j99 --"
+host = "run --bin comet-server  -j99 --"

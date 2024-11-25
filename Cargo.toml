@@ -13,9 +13,19 @@ panic = "abort"
 opt-level = "z"  # or "s" for smaller binaries
 strip = true
 
+[profile.dev]
+codegen-units = 16
+incremental = true
+debug-assertions = false
+overflow-checks = false
+opt-level = 0
+lto = "thin"
+
 [workspace.dependencies]
 anyhow = "1.0.93"
 dirs-next = "2.0.0"
 serde = { version = "1.0.215", features = ["derive"] }
 toml = "0.8.19"
 thiserror = "2.0.3"
+log = "0.4.22"
+env_logger = "0.11.5"

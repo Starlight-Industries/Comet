@@ -13,8 +13,7 @@ fn main() -> Result<()> {
     //let path = get_working_dir()?;
     //println!("{}",path.display());
     //first_run()?;
-
-        
+    
     run_cli();
     Ok(())
 }

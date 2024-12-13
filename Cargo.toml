@@ -1,16 +1,16 @@
 [workspace]
 
 resolver = "2"
-members = [
-    "cli",
-    "server"
-]
+# CLI - Comet user facing CLI
+# SERVER - Comet self hosted server that can communicate directly with comet in a way it understands
+# LIBCOMET - A way to share common datatypes such as packages, repositories, etc
+members = ["cli", "libcomet", "server"]
 
 [profile.release]
 codegen-units = 1
 lto = "fat"
 panic = "abort"
-opt-level = "z"  # or "s" for smaller binaries
+opt-level = "z"   # or "s" for smaller binaries
 strip = true
 
 [profile.dev]

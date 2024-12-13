@@ -4,3 +4,9 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+anyhow.workspace = true
+serde.workspace = true
+serde_yml = "0.0.12"
+thiserror.workspace = true
+url = { version = "2.5.4", features = ["serde"] }
+versions = { version = "6.3.2", features = ["serde"] }

@@ -1,11 +1,14 @@
-use std::{env, time::Duration};
-
-use anyhow::{anyhow, Ok, Result};
+use anyhow::anyhow;
+use anyhow::Result;
+use cli::run_cli;
+use libcomet::prelude::*;
 use log::{debug, error, info, warn};
 use rocket::{
     http,
     serde::{Deserialize, Serialize},
 };
+use std::{env, time::Duration};
+pub mod cli;
 pub mod workspace;
 #[macro_use]
 extern crate rocket;
@@ -14,8 +17,9 @@ extern crate rocket;
 fn index() -> &'static str {
     "Hello, world!"
 }
+
 #[get("/get/<package>/<version>")]
-fn give_stuff(package: &str, version: &str) -> String {
+fn get_package(package: &str, version: &str) -> String {
     info!("requested package name: '{package}' requested package version: '{version}'");
     let response = format!("{package}V{version}");
     response
@@ -23,7 +27,7 @@ fn give_stuff(package: &str, version: &str) -> String {
 
 async fn run_server() -> Result<()> {
     let _server = rocket::build()
-        .mount("/", routes![index, give_stuff])
+        .mount("/", routes![index, get_package])
         //.register("/", )
         .launch()
         .await
@@ -42,10 +46,11 @@ async fn test_stuff() -> Result<()> {
 
 #[rocket::main]
 async fn main() -> Result<()> {
-    env::set_var("RUST_LOG", "info");
+    env::set_var("RUST_LOG", "trace");
     env_logger::init();
+    run_cli();
     info!("Server started");
-    let (a, b) = tokio::join!(test_stuff(), run_server(),);
+    //let (_a, _b) = tokio::join!(test_stuff(), run_server());
 
     //run_server().await?;
 

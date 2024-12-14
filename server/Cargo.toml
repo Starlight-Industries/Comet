@@ -4,10 +4,14 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-rocket = "0.5.1"
+rocket = { version = "0.5.1", features = ["json"] }
 tokio = { version = "1.41.1", features = ["rt-multi-thread"] }
-anyhow = {workspace = true}
+anyhow = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
-dirs-next = {workspace = true}
-log ={ workspace = true}
-env_logger = {workspace = true}
+dirs-next = { workspace = true }
+log = { workspace = true }
+env_logger = { workspace = true }
+libcomet.workspace = true
+versions = { version = "6.3.2", features = ["serde"] }
+url = "2.5.4"
+clap = { version = "4.5.23", features = ["derive"] }

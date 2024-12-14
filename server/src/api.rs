@@ -4,8 +4,10 @@ use log::error;
 use log::info;
 use rocket::get;
 use rocket::routes;
+
+use crate::workspace::ServerConfig;
 #[get("/")]
-fn index() -> &'static str {
+fn identity() -> &'static str {
     "Hello, world!"
 }
 
@@ -16,15 +18,19 @@ fn get_package(package: &str, version: &str) -> String {
     response
 }
 
-pub async fn run_server() -> Result<()> {
+pub async fn run_server(config: ServerConfig) -> Result<()> {
     info!("Starting comet server");
     let _server = rocket::build()
-        .mount("/", routes![index, get_package])
-        //.register("/", )
+        .configure(rocket::config::Config {
+            port: config.port,
+
+            ..Default::default()
+        })
+        .mount("/", routes![identity, get_package])
         .launch()
         .await
         .map_err(|e| {
-            error!("An error occured");
+            error!("An error occured. {e}");
             anyhow!(format!("Failed to start rocket server: {e:#}"))
         });
     Ok(())

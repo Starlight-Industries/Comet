@@ -14,7 +14,8 @@ pub mod workspace;
 
 #[rocket::main]
 async fn main() -> Result<()> {
-    env::set_var("RUST_LOG", "trace");
+    env::set_var("RUST_LOG", "debug");
+    env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
     run_cli().await?;
     // let (_a, _b) = tokio::join!(test_stuff(), run_server());

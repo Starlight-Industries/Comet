@@ -32,6 +32,18 @@ pub enum PackageState {
     Testing,
 }
 
+impl PackageState {
+    pub fn iter() -> impl Iterator<Item = PackageState> {
+        [
+            PackageState::Nightly,
+            PackageState::Git,
+            PackageState::Stable,
+            PackageState::Testing,
+        ]
+        .into_iter()
+    }
+}
+
 impl std::fmt::Display for PackageState {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -70,18 +82,43 @@ pub enum Bitnes {
 pub enum ArchitectureType {
     #[default]
     X86,
-    Risc,
+    RiscV,
     Aarch,
-    Looong,
+    Loong,
     PowerPC,
+}
+impl std::fmt::Display for ArchitectureType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ArchitectureType::X86 => writeln!(f, "X86"),
+            ArchitectureType::RiscV => writeln!(f, "RiscV"),
+            ArchitectureType::Aarch => writeln!(f, "Aarch"),
+            ArchitectureType::Loong => writeln!(f, "Loong"),
+            ArchitectureType::PowerPC => writeln!(f, "PowerPC"),
+        }
+    }
+}
+impl ArchitectureType {
+    pub fn iter() -> impl Iterator<Item = ArchitectureType> {
+        vec![
+            ArchitectureType::X86,
+            ArchitectureType::RiscV,
+            ArchitectureType::Aarch,
+            ArchitectureType::Loong,
+            ArchitectureType::PowerPC,
+        ]
+        .into_iter()
+    }
 }
 #[derive(
     Debug, Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,
 )]
 pub struct Architecture {
+    #[serde(rename = "type")]
     pub typ: ArchitectureType,
     pub bitness: Bitnes,
 }
+
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub struct Package {
     name: String,

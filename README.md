@@ -21,7 +21,8 @@
 
 ## What is Comet?
 
-Comet is a platform agnostic package manager purpose built to simplify the needs of both developers and new users alike, providing a versatile, fast, and capable alterntive to other more monolithic package managers
+Comet is a platform agnostic, automatically declarative package manager purpose built to simplify the needs of both developers and new users alike.
+It tries to providing a versatile, fast, and capable alterntive to other monolthic
 
 ## Why?
 
@@ -115,33 +116,6 @@ No, not yet atleast. Comet is designed to complement system package managers by 
 <summary><b>How can I contribute?</b></summary>
 We welcome contributions! Check out the [Contributing Guide]() for details on how to get started. Whether it's fixing bugs, improving documentation, or building new features, we'd love your help!
 </details>
-
-## Credits
-
-<table>
-<tr>
-<td align="center">
-<a href="https://github.com/Caznix">
-<img src="https://github.com/Caznix.png" width="100px;" alt="Caznix"/>
-<br />
-<sub><b>@Caznix</b></sub>
-<br />
-<sub>Creator</sub>
-</a>
-</td>
-<td align="center">
-<a href="https://github.com/libriscv/godot-sandbox">
-<img src="https://github.com/libriscv.png" width="100px;" alt="Godot Sandbox"/>
-<br />
-<sub><b>Godot Sandbox</b></sub>
-<br />
-<sub>Inspiration</sub>
-</a>
-</td>
-</tr>
-</table>
-
----
 
 <div align="center">
 

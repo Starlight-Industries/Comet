@@ -1,0 +1,3 @@
+struct IdentityRequest {
+    name: String,
+}

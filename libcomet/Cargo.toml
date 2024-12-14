@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 anyhow.workspace = true
+dirs-next.workspace = true
 serde.workspace = true
 serde_yml = "0.0.12"
 thiserror.workspace = true

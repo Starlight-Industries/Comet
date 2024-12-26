@@ -35,19 +35,43 @@ Comet aims to provide:
 
 ## Quick Start
 
+### Installation
+
+> [!IMPORTANT]
+> Comet is currently in early development. this means that the installation process is not yet stable. and must be done manually.
+#### Method 1. Debug artifacts
+0.
+
+#### Method 2. Build from source
+
+
+0. Install the rust toolchain 
 ```bash
-curl -f https://comet.starlight.rs/get | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-After installation, Comet will be available in your `$PATH`. You can verify the installation by running:
-
+0. Clone the repository
 ```bash
-comet --version
+git clone https://github.com/Starlight-Industries/Comet.git
+```
+1. Navigate to the project directory
+```bash
+cd Comet
+```
+2. Build & install the project
+```bash
+cargo install --path .
 ```
 
-> 💡 if comet cannot be found make sure it is in your $PATH and restart your shell
+> [!NOTE]
+> If you are on windows, you will need to add the cargo bin directory to your path.
+> ```ps1
+> setx PATH "%PATH%;%USERPROFILE%\.cargo\bin"
+> ```
 
-## Usage
+> [!TIP]
+> if comet cannot be found make sure it is in your $PATH and restart your shell
+### Usage
 
 <div align="center">
 
@@ -89,17 +113,27 @@ comet --version
 * [ ] Intelligent version rollbacks.
 * [ ] Bootstrap linux via Comet. ~~starlight-linux soon™~~
 
-| Platform | Status        |
-| -------- | ------------- |
-| Linux    | ✅ Supported   |
-| macOS    | 🔄 In progress |
-| Windows  | 🔄 In progress |
+### 🌐 Platform Support
+⭐ - The most support is avalible for this platform.
+
+🔥 - This platform is currently supported with high priority.
+
+⚠️ - The platform is planned to be supported in the future but is not currently supported for external reasons. (eg. MacOS requiring F)
+
+| Platform | Status          | Priority      |
+| :--------: | :-------------: |:----------: |
+| Linux    | ✅ Supported   | ⭐ Main       |
+| Windows  | 🔄 In progress | 🔥 High       |
+| macOS    | 🔎 Planned     | ⚠️ High       |
+
+> [!NOTE]
+> We are always looking for new contributors to help us achieve our goals, so if you're interested and posess a targeted device, please reach out to us on [Discord](https://discord.com/invite/xJX4GXvbME) (Eg. MacOS 🍎).
 
 ## Community/Support
-Here are the following links to all of our socials, if you discover a different account on any platform not listed here claiming to be affilated they are NOT affilated with the project, starlight-industries, or any of our related projects, products, or services. If you would like to you could contact us via [Discord]() if you arent sure
+Here are the following links to all of our socials, if you discover a different account on any platform not listed here claiming to be affilated they are NOT affilated with the project, starlight-industries, or any of our related projects, products, or services.
 <div align="center">
 
-[![Discord Banner](https://img.shields.io/discord/1262066946900361247?style=for-the-badge&logo=discord)](https://discord.gg/kv3jKuPW9F)
+[![Discord Banner](https://img.shields.io/discord/1258146131372806217?style=for-the-badge&logo=discord)](https://discord.gg/xJX4GXvbME)
 
 </div>
 

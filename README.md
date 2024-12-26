@@ -71,6 +71,17 @@ cargo install --path .
 
 > [!TIP]
 > if comet cannot be found make sure it is in your $PATH and restart your shell
+
+#### ⚠️ ~~Method 3. Install script~~ (WIP)
+> [!WARNING]
+> This method is not yet stable, and may not work as expected.
+> This method may or may not be available at the time of reading. (The script is a placeholder at the time of writing)
+
+Simply run the following command to install the latest version of Comet.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Starlight-Industries/Comet/main/install.sh | sh
+```
 ### Usage
 
 <div align="center">

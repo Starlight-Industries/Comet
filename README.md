@@ -139,6 +139,7 @@ Here are the following links to all of our socials, if you discover a different 
 
 ## FAQ
 
+
 </details>
 
 <details>
@@ -153,8 +154,20 @@ We welcome contributions! Check out the [Contributing Guide]() for details on ho
 
 <div align="center">
 
+## Contributing
+
+Thank you for considering contributing to Comet! We appreciate your interest in helping us improve the project. Comet is an open-source project and is made possible by the contributions of many individuals like You:
+
+<a href="https://github.com/Starlight-Industries/Comet/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Starlight-Industries/Comet" />
+</a>
+
+For more information on how to contribute, please refer to the [Contributing Guide](CONTRIBUTING.md).
+
+---
+
 Made with ❤️ by Starlight-industries & the open source community
   <br>
-  <sub>🌟 Star us on GitHub | 📢 Share with friends | 🤝 Join the community</sub>
+  <sub>🌟 Star us on GitHub | 📢 Share with friends | 🤝 Join the community!</sub>
   </div>
 </div>

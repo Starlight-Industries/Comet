@@ -17,8 +17,6 @@ use crate::workspace::ServerConfig;
 #[get("/")]
 fn identity() -> Json<IdentityRequest> {
     let architectures = get_config().unwrap().architectures;
-    let t: Option<String> = None;
-    t.unwrap();
     IdentityRequest {
         uid: "io.github.comet".to_string(),
         display_name: "Comet".to_string(),

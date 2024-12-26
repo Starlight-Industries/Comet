@@ -1,7 +1,10 @@
 use std::{sync::atomic::AtomicU8, time::Duration};
 
 use crate::{
-    server::{api::run_server, panic::{render_backtrace, write_backtrace}},
+    server::{
+        api::run_server,
+        panic::{render_backtrace, write_backtrace},
+    },
     workspace::{get_config, is_initalized},
 };
 use anyhow::Result;
@@ -13,7 +16,6 @@ use log::{debug, info};
 use prompt::create_config_interactive;
 use tokio::time::Instant;
 pub mod prompt;
-use std::sync::OnceLock;
 use lazy_static::lazy_static;
 #[derive(Parser)]
 #[command(name = "comet-server", version = env!("CARGO_PKG_VERSION"), author = env!("CARGO_PKG_AUTHORS"), about = env!("CARGO_PKG_DESCRIPTION"))]
@@ -61,7 +63,7 @@ pub async fn run_cli() -> Result<()> {
                 }
             }
             (false, false) => {
-                if !get_config().is_ok() {
+                if get_config().is_err() {
                     let confirm = Confirm::new("You are about to overwrite an invalid configuration. Are you sure this is what you want?")
                         .with_default(false)
                         .prompt()?;
@@ -81,37 +83,36 @@ pub async fn run_cli() -> Result<()> {
                 debug!("Server will be started as a background process")
             }
             info!("Running server");
-            
+
             let mut last_attempt_time = Instant::now();
 
             loop {
                 let config = get_config().expect("Failed to obtain server configuration");
                 let result = std::panic::catch_unwind(|| {
-                    tokio::spawn(async move  {
+                    tokio::spawn(async move {
                         std::thread::sleep(Duration::new(5, 0));
                         run_server(&config).await.expect("Failed to run server");
                     })
                 });
                 match result {
-                    Ok(handle) => {
-                        match handle.await {
-                            Ok(_) => {
-                                println!("Server exited gracefully");
-                                std::process::exit(0);
-                            }
-                            Err(e) => {
-                                println!("Server crashed: {}", e);
-                                handle_crash(&mut last_attempt_time,format!("Server crashed: {}", e));
-                            }
+                    Ok(handle) => match handle.await {
+                        Ok(_) => {
+                            println!("Server exited gracefully");
+                            std::process::exit(0);
+                        }
+                        Err(e) => {
+                            println!("Server crashed: {}", e);
+                            handle_crash(&mut last_attempt_time, format!("Server crashed: {}", e));
                         }
                     },
-                    Err(e) => {
-                        handle_crash(&mut last_attempt_time,format!("Server crashed: An unknown error has occured"));
-                    },
+                    Err(_) => {
+                        handle_crash(
+                            &mut last_attempt_time,
+                            "Server crashed: An unknown error has occured".to_string(),
+                        );
+                    }
                 }
             }
-
-
         }
         None => {
             println!("No command provided. Use 'comet --help' for usage information.");
@@ -124,8 +125,7 @@ lazy_static! {
     pub static ref ATTEMPTS: AtomicU8 = AtomicU8::new(0);
 }
 
-
-fn handle_crash(last_attempt_time: &mut Instant,error_string: String)  {
+fn handle_crash(last_attempt_time: &mut Instant, error_string: String) {
     let now = Instant::now();
     if now.duration_since(*last_attempt_time) > Duration::from_secs(10) {
         // Reset the attempts counter if the last crash was more than 10 seconds ago
@@ -136,13 +136,20 @@ fn handle_crash(last_attempt_time: &mut Instant,error_string: String)  {
 
     let attempts = ATTEMPTS.fetch_add(1, std::sync::atomic::Ordering::SeqCst) + 1;
     if attempts > MAX_ATTEMPTS {
-        let log_path = get_working_dir().expect("Failed to get working directory"); 
+        let log_path = get_working_dir().expect("Failed to get working directory");
         if !log_path.exists() {
             std::fs::create_dir_all(&log_path).expect("Failed to create log directory");
         }
         let log_path = log_path.join("panic.log");
-        write_backtrace(render_backtrace(),error_string, &log_path);
-        println!("{}","Server failed too many times. Exiting...".red().bold().italic().underline());
+        write_backtrace(render_backtrace(), error_string, &log_path);
+        println!(
+            "{}",
+            "Server failed too many times. Exiting..."
+                .red()
+                .bold()
+                .italic()
+                .underline()
+        );
         std::process::exit(0);
     } else {
         println!("Server failed. Retrying... (Attempt {attempts}/{MAX_ATTEMPTS})");

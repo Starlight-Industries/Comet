@@ -83,7 +83,7 @@ pub fn create_config_interactive() -> Result<ServerConfig> {
         .map(|s| {
             if s.is_some() {
                 let path = PathBuf::from_str(&s.unwrap()).ok();
-                return path;
+                path
             } else {
                 None
             }

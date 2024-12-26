@@ -16,7 +16,6 @@ use libcomet::package::PackageState;
 use libcomet::workspace::get_working_dir;
 use log::debug;
 use log::error;
-use rocket::http::hyper::server::Server;
 use serde::Deserialize;
 use serde::Serialize;
 use url::Url;
@@ -100,24 +99,16 @@ pub fn get_config() -> Result<ServerConfig> {
         }
         Err(e) => {
             error!("Could not serialize configuration: {e}");
-            return Err(e.into());
+            Err(e.into())
         }
-    };
+    }
 }
 
 pub fn is_initalized() -> bool {
     let mut config_path = get_working_dir().unwrap();
     config_path.push("server/config.server.yml");
 
-    match get_config() {
-        Ok(config) => {
-            true
-        }
-        Err(e) => {
-            error!("An error has occured, assuming we are not initalized: {e}");
-            false
-        }
-    }
+    get_config().is_ok()
 }
 
 pub fn write_to_path(path: &PathBuf, content: String, file_name: &str) -> Result<()> {

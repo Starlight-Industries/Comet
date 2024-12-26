@@ -1,8 +1,4 @@
-use std::{
-    fs::{self, File},
-    path::PathBuf,
-    str::FromStr,
-};
+use std::{path::PathBuf, str::FromStr};
 
 use crate::workspace::{self, ServerConfig};
 use anyhow::{Context, Ok, Result};
@@ -15,6 +11,12 @@ use log::debug;
 use url::Url;
 
 pub fn create_config_interactive() -> Result<ServerConfig> {
+    let repo_name = Text::new("What would you like your repo name to be?")
+        .with_help_message("Can be anything!")
+        .prompt()?;
+    let uid = Text::new("What would you like your repo's UID to be?")
+        .with_help_message("Should be a reverse dns url, eg. io.github.john.myrepo")
+        .prompt()?;
     let port: u16 = Text::new("Enter the port number you would like the server to run on:")
         .with_default("8000")
         .prompt()?
@@ -35,6 +37,7 @@ pub fn create_config_interactive() -> Result<ServerConfig> {
         .with_default(true)
         .prompt()?;
     let allow_missing_variants = Confirm::new("Would you like to allow missing package variants?")
+        .with_default(false)
         .with_help_message("If this is false certain packages will not be provided if they are missing for an enabled architecture
         In order In order to prevent this consider enabling use_auto_build")
     .prompt()?;
@@ -67,11 +70,11 @@ pub fn create_config_interactive() -> Result<ServerConfig> {
     let log_level = Select::new(
         "What log level would you like the server to use",
         vec![
-            log::Level::Trace,
-            log::Level::Error,
-            log::Level::Warn,
-            log::Level::Debug,
-            log::Level::Info,
+            log::LevelFilter::Trace,
+            log::LevelFilter::Error,
+            log::LevelFilter::Warn,
+            log::LevelFilter::Debug,
+            log::LevelFilter::Info,
         ],
     )
     .prompt()?;
@@ -103,6 +106,8 @@ pub fn create_config_interactive() -> Result<ServerConfig> {
         log_path,
         allow_external_mirrors,
         use_auto_build,
+        repo_name,
+        uid,
     };
     let config_path = get_server_dir().context("Failed to obtain config path")?;
 

@@ -1,6 +1,6 @@
 #[global_allocator]
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
-use anyhow::{Ok, Result};
+use anyhow::Result;
 use cli::run_cli;
 pub mod workspace;
 pub mod config;
@@ -14,7 +14,12 @@ fn main() -> Result<()> {
     //println!("{}",path.display());
     //first_run()?;
     
-    run_cli();
+    match run_cli() {
+        Ok(_) => (),
+        Err(e) => {
+            println!("command failed: {e}");
+        },
+    }
     Ok(())
 }
 

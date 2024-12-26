@@ -1,4 +1,5 @@
-use std::f32::NAN;
+pub mod packages;
+
 use std::fs;
 use std::fs::File;
 use std::io::Write;
@@ -15,12 +16,16 @@ use libcomet::package::PackageState;
 use libcomet::workspace::get_working_dir;
 use log::debug;
 use log::error;
+use rocket::http::hyper::server::Server;
 use serde::Deserialize;
 use serde::Serialize;
 use url::Url;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServerConfig {
+    pub repo_name: String,
+    // UID must be a reverse dns url, eg. io.github.starlight-industries.comet
+    pub uid: String,
     // A vector of package types that the current hosted server provides
     // eg, the server has both stable and nightly variants for Packages
     pub repo_type: Vec<PackageState>,
@@ -37,7 +42,7 @@ pub struct ServerConfig {
     // Define if the server has a cert
     pub use_http: bool,
     pub protected: bool,
-    pub log_level: log::Level,
+    pub log_level: log::LevelFilter,
     pub log_path: Option<PathBuf>,
     // Allow others to automatically create backups of this servers binaries
     // locally on their machines, for archival or otherwise.
@@ -47,12 +52,6 @@ pub struct ServerConfig {
     // if its build configuration is avalible.
     // Defaults to FALSE
     pub use_auto_build: bool,
-}
-
-impl ServerConfig {
-    fn port(&self) -> u16 {
-        self.port
-    }
 }
 
 impl Default for ServerConfig {
@@ -71,31 +70,33 @@ impl Default for ServerConfig {
             baseurl: Url::from_str("https://0.0.0.0:8000").unwrap(),
             use_http: true,
             protected: false,
-            log_level: log::Level::Info,
+            log_level: log::LevelFilter::Info,
             log_path: Some(PathBuf::from_str("./").unwrap()),
             allow_external_mirrors: false,
             use_auto_build: false,
+            repo_name: String::from("MyRepo"),
+            uid: String::from("io.github.john.myrepo"),
         }
     }
 }
 
-pub fn get_config() -> Result<Option<ServerConfig>> {
+pub fn get_config() -> Result<ServerConfig> {
     let mut config_path = get_working_dir()?;
     if !config_path.exists() {
         debug!("the Comet config path did not yet exist, this is likely the first run");
-        return Ok(None);
+        return Err(anyhow!("The server has not been initialized"));
     }
     config_path.push("server/config.server.yml");
     if !config_path.exists() {
         debug!("the server config did not exist: {config_path:#?}");
-        return Ok(None);
+        return Err(anyhow!("There is not a configuration n the server directory"));
     }
     let config =
         fs::read_to_string(config_path).context("Failed to read configuration file to string")?;
     match serde_yml::from_str(&config) {
         Ok(config) => {
             debug!("server config has been serialized: Config: {config:#?}");
-            return Ok(Some(config));
+            return Ok(config);
         }
         Err(e) => {
             error!("Could not serialize configuration: {e}");
@@ -110,11 +111,7 @@ pub fn is_initalized() -> bool {
 
     match get_config() {
         Ok(config) => {
-            if config.is_some() {
-                true
-            } else {
-                false
-            }
+            true
         }
         Err(e) => {
             error!("An error has occured, assuming we are not initalized: {e}");
@@ -126,7 +123,7 @@ pub fn is_initalized() -> bool {
 pub fn write_to_path(path: &PathBuf, content: String, file_name: &str) -> Result<()> {
     if !path.exists() {
         debug!("Path did not yet exist: {path:#?}");
-        fs::create_dir_all(path.parent().unwrap())?;
+        fs::create_dir_all(path)?;
     }
     let mut new_path = path.clone();
     new_path.push(file_name);

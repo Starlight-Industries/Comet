@@ -1,26 +1,22 @@
-use anyhow::anyhow;
 use anyhow::Result;
 use cli::run_cli;
-use libcomet::prelude::*;
-use log::{debug, error, info, warn};
-use rocket::{
-    http,
-    serde::{Deserialize, Serialize},
-};
-use std::{env, time::Duration};
+use splash::print_splash;
+
 pub mod api;
 pub mod cli;
+pub mod splash;
 pub mod workspace;
 
 #[rocket::main]
 async fn main() -> Result<()> {
-    env::set_var("RUST_LOG", "debug");
-    env::set_var("RUST_BACKTRACE", "1");
-    env_logger::init();
-    run_cli().await?;
-    // let (_a, _b) = tokio::join!(test_stuff(), run_server());
+    #[cfg(debug_assertions)]
+    {
+        std::env::set_var("RUST_LOG", "debug");
+    }
 
-    //run_server().await?;
+    env_logger::init();
+    print_splash();
+    run_cli().await?;
 
     Ok(())
 }

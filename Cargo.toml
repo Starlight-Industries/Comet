@@ -12,21 +12,28 @@ lto = "fat"
 panic = "abort"
 opt-level = "z"   # or "s" for smaller binaries
 strip = true
+rpath = false
 
 [profile.dev]
 codegen-units = 16
 incremental = true
-debug-assertions = false
+debug-assertions = true
 overflow-checks = false
 opt-level = 0
 lto = "thin"
 
+[profile.release.build-override]
+opt-level = 3
+codegen-units = 256
+
 [workspace.dependencies]
 libcomet = { path = "./libcomet", version = "0.*" }
-anyhow = "1.0.93"
+anyhow = "1.0.95"
 dirs-next = "2.0.0"
-serde = { version = "1.0.215", features = ["derive"] }
+serde = { version = "1.0.216", features = ["derive"] }
 toml = "0.8.19"
-thiserror = "2.0.3"
+thiserror = "2.0.9"
 log = {version = "0.4.22", features = ["serde"]}
-env_logger = "0.11.5"
+env_logger = "0.11.6"
+colored = "2.2.0"
+rayon = "1"

@@ -39,10 +39,8 @@ Comet aims to provide:
 
 > [!IMPORTANT]
 > Comet is currently in early development. this means that the installation process is not yet stable. and must be done manually.
-#### Method 1. Debug artifacts
-0.
 
-#### Method 2. Build from source
+#### Method 1. Build from source
 
 
 0. Install the rust toolchain 
@@ -50,15 +48,15 @@ Comet aims to provide:
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-0. Clone the repository
+1. Clone the repository
 ```bash
 git clone https://github.com/Starlight-Industries/Comet.git
 ```
-1. Navigate to the project directory
+2. Navigate to the project directory
 ```bash
 cd Comet
 ```
-2. Build & install the project
+. Build & install the project
 ```bash
 cargo install --path .
 ```
@@ -72,7 +70,7 @@ cargo install --path .
 > [!TIP]
 > if comet cannot be found make sure it is in your $PATH and restart your shell
 
-#### ⚠️ ~~Method 3. Install script~~ (WIP)
+#### ⚠️ ~~Method 2. Install script~~ (WIP)
 > [!WARNING]
 > This method is not yet stable, and may not work as expected.
 > This method may or may not be available at the time of reading. (The script is a placeholder at the time of writing)

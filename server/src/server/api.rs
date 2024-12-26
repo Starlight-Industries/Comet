@@ -1,13 +1,11 @@
-use core::arch;
 
 use anyhow::anyhow;
 use anyhow::Result;
-use libcomet::package::Architecture;
+
 use libcomet::request::repo::IdentityRequest;
 use log::error;
 use log::info;
 use rocket::config::Ident;
-use rocket::figment::Provider;
 use rocket::get;
 use rocket::routes;
 use rocket::serde::json::Json;

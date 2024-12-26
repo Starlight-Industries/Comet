@@ -24,7 +24,7 @@ pub fn print_splash() {
 
     A transparent, extensible, and declarative package manager
             for your favorite Operating Systems.
-                        Version "#
+                      Server Version "#
             .bright_white()
             .bold(),
         env!("CARGO_PKG_VERSION").green().italic().bold(),

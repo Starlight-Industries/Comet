@@ -95,7 +95,7 @@ pub fn get_config() -> Result<ServerConfig> {
     match serde_yml::from_str(&config) {
         Ok(config) => {
             debug!("server config has been serialized: Config: {config:#?}");
-            return Ok(config);
+            Ok(config)
         }
         Err(e) => {
             error!("Could not serialize configuration: {e}");

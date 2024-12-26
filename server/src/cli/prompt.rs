@@ -81,9 +81,9 @@ pub fn create_config_interactive() -> Result<ServerConfig> {
     let log_path: Option<PathBuf> = Text::new("Where do you want to store your logs?")
         .prompt_skippable()
         .map(|s| {
-            if s.is_some() {
-                let path = PathBuf::from_str(&s.unwrap()).ok();
-                path
+            if let Some(path) = s {
+                
+                PathBuf::from_str(&path).ok()
             } else {
                 None
             }

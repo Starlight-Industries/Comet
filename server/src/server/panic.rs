@@ -57,7 +57,7 @@ We have generated a report file at \"{}\". Submit an issue or email with the sub
 
 To submit the crash report:
 
-https://codeberg.org/Starlight-industries/Comet/issues
+https://github.com/Starlight-Industries/Comet/issues
 
 We take privacy seriously, and do not perform any automated error collection. In order to improve the software, we rely on people to submit reports.
 

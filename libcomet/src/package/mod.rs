@@ -17,7 +17,7 @@ pub enum PackageError {
     InvalidPackageStatus { found: String },
     #[error(
         "An Unknown package error occured.
-        Please report this to https://codeberg.org/Starlight-industries/Comet/issues and include your server.log"
+        Please report this to https://github.com/Starlight-Industries/Comet/issues and include your server.log"
     )]
     Other(#[from] anyhow::Error),
 }

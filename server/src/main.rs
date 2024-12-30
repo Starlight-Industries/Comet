@@ -2,6 +2,7 @@
 use anyhow::Result;
 use cli::run_cli;
 use splash::print_splash;
+use crate::server::panic::set_panic_hook;
 
 
 pub mod cli;

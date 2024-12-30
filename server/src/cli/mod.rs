@@ -11,7 +11,7 @@ use anyhow::Result;
 use clap::{Parser, Subcommand};
 use colored::Colorize;
 use inquire::Confirm;
-use libcomet::workspace::get_working_dir;
+use libcomet::workspace::{self, get_working_dir};
 use log::{debug, info};
 use prompt::create_config_interactive;
 use tokio::time::Instant;
@@ -87,7 +87,19 @@ pub async fn run_cli() -> Result<()> {
             let mut last_attempt_time = Instant::now();
 
             loop {
-                let config = get_config().expect("Failed to obtain server configuration");
+                let config = get_config().unwrap_or_else(|_| {
+                    match prompt::create_config_interactive() {
+                        Ok(generated_config) => {
+                            return generated_config;
+                        },
+                        Err(e) => {
+                            println!("Failed to create config: {e}");
+                            std::process::exit(1);
+                        },
+                    }
+
+            
+                });
                 let result = std::panic::catch_unwind(|| {
                     tokio::spawn(async move {
                         std::thread::sleep(Duration::new(5, 0));

@@ -459,6 +459,7 @@ dependencies = [
  "tempfile",
  "thiserror 2.0.9",
  "toml",
+ "versions",
 ]
 
 [[package]]
@@ -481,6 +482,7 @@ dependencies = [
  "regex",
  "rocket",
  "serde",
+ "serde_json",
  "serde_yml",
  "tokio",
  "toml",

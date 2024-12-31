@@ -1,3 +1,4 @@
+
 use std::{sync::atomic::AtomicU8, time::Duration};
 
 use crate::{
@@ -11,7 +12,7 @@ use anyhow::Result;
 use clap::{Parser, Subcommand};
 use colored::Colorize;
 use inquire::Confirm;
-use libcomet::workspace::{self, get_working_dir};
+use libcomet::workspace::get_working_dir;
 use log::{debug, info};
 use prompt::create_config_interactive;
 use tokio::time::Instant;
@@ -97,8 +98,6 @@ pub async fn run_cli() -> Result<()> {
                             std::process::exit(1);
                         },
                     }
-
-            
                 });
                 let result = std::panic::catch_unwind(|| {
                     tokio::spawn(async move {

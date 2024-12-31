@@ -2,6 +2,7 @@
 pub mod package;
 pub mod repo;
 pub mod request;
+pub mod response;
 pub mod workspace;
 
 pub mod prelude {

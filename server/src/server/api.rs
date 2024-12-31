@@ -7,6 +7,7 @@ use log::error;
 use log::info;
 use rocket::config::Ident;
 use rocket::get;
+use rocket::post;
 use rocket::routes;
 use rocket::serde::json::Json;
 
@@ -24,11 +25,13 @@ fn identity() -> Json<IdentityRequest> {
     .into()
 }
 
-#[get("/get/<package>/<version>")]
-fn get_package(package: &str, version: &str) -> String {
-    info!("requested package name: '{package}' requested package version: '{version}'");
-    let response = format!("{package}V{version}");
-    response
+use libcomet::request::package::GetRequest;
+
+#[post("/get", data = "<package>")]
+fn get_package(package: Json<GetRequest>) -> Json<GetRequest> {
+    info!("requested package name: '{package:#?}' with version: 'latest'");
+    let req = package.into_inner();
+    Json(req)
 }
 
 pub async fn run_server(config: &ServerConfig) -> Result<()> {

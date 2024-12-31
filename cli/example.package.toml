@@ -1,18 +1,31 @@
 [package]
-name = "blender"
+name = "zenyx"
 version = "0.1.0"
-dependencies = ["libc"]
-optional_dependencie = ["rocm"]
+dependencies = []
 license = "MIT"
+
+[package.architecture]
+type = "x86"
+bitness = "x64"
 
 [metadata]
 description = ""
-display_name = ""
-authors = ["contributors@blender.org"]
-documentation = ""
-repository_url = ""
-tags = [
-    "3D",
-    "Productivity",
-    #"Game engine"
+display_name = "Zenyx"
+authors = ["caznix"]
+documentation_url = "https://zenyx-engine.github.io/docs"
+git_url = "htttps://github.com/zenyx-engine/zenyx"
+tags = ["3D", "Productivity", "Game engine"]
+
+[build]
+dependencies = ["rust-nightly"]
+git_url = "https://github.com/zenyx-engine/zenyx"
+# commit hash, tag, branch, etc
+build_info = { tag = "example", branch = "main" }
+steps = [
+    "cargo build --release",
 ]
+output_path = "target/release/zenyx"
+
+[package.os_deps]
+windows = ["msvc"]
+linux = ["clang","llvm"]

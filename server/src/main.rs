@@ -1,7 +1,9 @@
 #![feature(panic_payload_as_str)]
 use anyhow::Result;
 use cli::run_cli;
+use libcomet::request::package::GetRequest;
 use splash::print_splash;
+use versions::SemVer;
 use crate::server::panic::set_panic_hook;
 
 
@@ -21,10 +23,14 @@ async fn main() -> Result<()> {
     {
         set_panic_hook();
     }
+    let test = GetRequest { package_name: String::from("ashkjdfs"), package_version: String::from("0.0.1")};
+    let json = serde_json::to_string_pretty(&test).unwrap();
+    println!("{:#}", json);
 
     env_logger::init();
     print_splash();
-    run_cli().await?;
+    // run_cli().await?;
 
     Ok(())
 }
+

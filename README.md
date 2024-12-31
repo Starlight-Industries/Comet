@@ -33,6 +33,11 @@ Comet aims to provide:
 * Easy integration for other managers, (see npm for example)
 * Reduced reliance on complex package ecosystems (such as pip + conda)
 
+## When should I use Comet?
+
+Have you ever heard the dreaded "it works on my machine" comment? Comet is designed to elimate this issue
+entirely. Simply install the packages build dependencies needed to build and run your application in one command, and your done! Even if comet doesn`t know how to build your project. You can use the automatically generated dependency tree to replicate your environment. Or you can easily define the build process yourself in a familar format (eg. toml)
+
 ## Quick Start
 
 ### Installation

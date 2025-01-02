@@ -112,6 +112,9 @@ pub async fn run_cli() -> Result<()> {
         },
         Some(Commands::Run { daemon, port }) => {
             let mut overrides = Overrides::builder();
+            if port.is_some() {
+                overrides = overrides.port(port);
+            }
 
             if daemon {
                 debug!("Server will be started as a background process")
@@ -134,7 +137,6 @@ pub async fn run_cli() -> Result<()> {
                     
                 let result = std::panic::catch_unwind(|| {
                     tokio::spawn(async move {
-                        let port = overrides.build();
                         std::thread::sleep(Duration::new(5, 0));
                         let arg = overrides.build();
                         run_server(&config,arg).await.expect("Failed to run server");

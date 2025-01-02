@@ -29,7 +29,7 @@ async fn main() -> Result<()> {
 
     env_logger::init();
     print_splash();
-    // run_cli().await?;
+    run_cli().await?;
 
     Ok(())
 }

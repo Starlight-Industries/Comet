@@ -1,5 +1,6 @@
 use std::backtrace::Backtrace;
 
+use derive_more::derive::{From, FromStr, Not};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use url::Url;
@@ -67,7 +68,20 @@ impl std::convert::TryFrom<String> for PackageState {
     }
 }
 #[derive(
-    Debug, Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,
+    Debug,
+    Clone,
+    Copy,
+    Default,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    Hash,
+    Serialize,
+    Deserialize,
+    FromStr,
+    From,
+    Not,
 )]
 pub enum Bitnes {
     #[serde(rename = "x32")]
@@ -78,7 +92,20 @@ pub enum Bitnes {
 }
 
 #[derive(
-    Debug, Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,
+    Debug,
+    Clone,
+    Copy,
+    Default,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    Hash,
+    Serialize,
+    Deserialize,
+    FromStr,
+    From,
+    Not,
 )]
 pub enum ArchitectureType {
     #[default]
@@ -112,27 +139,75 @@ impl ArchitectureType {
         .into_iter()
     }
 }
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,)]
+#[derive(
+    Debug,
+    Clone,
+    Copy,
+    Default,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    Hash,
+    Serialize,
+    Deserialize,
+    From,
+)]
 pub struct Architecture {
     #[serde(rename = "type")]
     pub typ: ArchitectureType,
     pub bitness: Bitnes,
 }
 
-#[derive(Debug, Clone, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,)]
+#[derive(
+    Debug,
+    Clone,
+    Default,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    Hash,
+    Serialize,
+    Deserialize,
+    From,
+)]
 pub struct PackageConfig {
     pub package: Package,
     pub metadata: Option<Metadata>,
     pub build: Option<Build>,
-
 }
-#[derive(Debug, Clone, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,)]
+#[derive(
+    Debug,
+    Clone,
+    Default,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    Hash,
+    Serialize,
+    Deserialize,
+    From,
+)]
 pub struct DependencyPlatforms {
     pub windows: Option<Vec<String>>,
     pub linux: Option<Vec<String>>,
     pub macos: Option<Vec<String>>,
 }
-#[derive(Debug, Clone, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,)]
+#[derive(
+    Debug,
+    Clone,
+    Default,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    Hash,
+    Serialize,
+    Deserialize,
+    From,
+)]
 pub struct Package {
     pub name: String,
     pub version: String,
@@ -142,8 +217,19 @@ pub struct Package {
     pub license: String,
     pub architecture: Architecture,
 }
-
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,)]
+#[derive(
+    Debug,
+    Clone,
+    Default,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    Hash,
+    Serialize,
+    Deserialize,
+    From,
+)]
 pub struct Metadata {
     pub description: Option<String>,
     pub display_name: Option<String>,
@@ -153,18 +239,40 @@ pub struct Metadata {
     pub tags: Option<Vec<String>>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    Hash,
+    Serialize,
+    Deserialize,
+    From,
+)]
 pub struct Build {
     #[serde(default)]
     pub dependencies: Vec<String>,
-    
+
     pub git_url: Url,
     pub build_info: BuildInfo,
     pub steps: Vec<String>,
     pub output_path: String,
 }
 
-#[derive(Debug, Clone, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    Hash,
+    Serialize,
+    Deserialize,
+    From,
+)]
 pub struct BuildInfo {
     pub tag: String,
     pub branch: String,

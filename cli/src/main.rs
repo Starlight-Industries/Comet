@@ -9,12 +9,12 @@ pub mod package;
 pub mod cli;
 
 
-
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     // let test_str = std::fs::read_to_string("example.package.toml")?;
     // let test_package = toml::from_str::<PackageConfig>(&test_str)?;
     // println!("{test_package:#?}");
-    run_cli()?;
+    run_cli().await?;
     Ok(())
 }
 

@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 anyhow.workspace = true
+derive_more = { version = "1.0.0", features = ["as_ref", "display", "from", "from_str", "into", "into_iterator", "not"] }
 dirs-next.workspace = true
 serde.workspace = true
 serde_yml = "0.0.12"

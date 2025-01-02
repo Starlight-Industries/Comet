@@ -1,4 +1,3 @@
-
 use std::{sync::atomic::AtomicU8, time::Duration};
 
 use crate::{
@@ -39,9 +38,41 @@ enum Commands {
         #[arg(short, long)]
         /// Runs the server as a background process
         daemon: bool,
+        #[arg(short, long)]
+        port: Option<u16>,
     },
 }
+#[derive(Debug,Clone, Copy)]
+pub struct Overrides {
+    pub port: Option<u16>,
+}
 
+impl Overrides {
+    pub fn builder() -> OverridesBuilder {
+        OverridesBuilder::default()
+    }
+}
+#[derive(Debug,Clone, Copy)]
+pub struct OverridesBuilder {
+    port: Option<u16>,
+}
+
+impl Default for OverridesBuilder {
+    fn default() -> Self {
+        Self { port: None }
+    }
+}
+
+impl OverridesBuilder {
+    pub fn port(mut self, port: Option<u16>) -> Self {
+        self.port = Some(port.unwrap());
+        self
+    }
+
+    pub fn build(self) -> Option<Overrides> {
+        self.port.map(|port| Overrides { port: Some(port) })
+    }
+}
 pub async fn run_cli() -> Result<()> {
     let cli = Cli::parse();
 
@@ -79,7 +110,9 @@ pub async fn run_cli() -> Result<()> {
                 unreachable!();
             }
         },
-        Some(Commands::Run { daemon }) => {
+        Some(Commands::Run { daemon, port }) => {
+            let mut overrides = Overrides::builder();
+
             if daemon {
                 debug!("Server will be started as a background process")
             }
@@ -88,21 +121,23 @@ pub async fn run_cli() -> Result<()> {
             let mut last_attempt_time = Instant::now();
 
             loop {
-                let config = get_config().unwrap_or_else(|_| {
-                    match prompt::create_config_interactive() {
+                let config =
+                    get_config().unwrap_or_else(|_| match prompt::create_config_interactive() {
                         Ok(generated_config) => {
                             return generated_config;
-                        },
+                        }
                         Err(e) => {
                             println!("Failed to create config: {e}");
                             std::process::exit(1);
-                        },
-                    }
-                });
+                        }
+                    });
+                    
                 let result = std::panic::catch_unwind(|| {
                     tokio::spawn(async move {
+                        let port = overrides.build();
                         std::thread::sleep(Duration::new(5, 0));
-                        run_server(&config).await.expect("Failed to run server");
+                        let arg = overrides.build();
+                        run_server(&config,arg).await.expect("Failed to run server");
                     })
                 });
                 match result {

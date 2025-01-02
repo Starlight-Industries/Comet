@@ -1,0 +1,47 @@
+{
+  "uid": "io.github.comet",
+  "display_name": "Comet",
+  "architectures": [
+    {
+      "type": "x86",
+      "bitness": "x32"
+    },
+    {
+      "type": "x86",
+      "bitness": "x64"
+    },
+    {
+      "type": "RiscV",
+      "bitness": "x32"
+    },
+    {
+      "type": "RiscV",
+      "bitness": "x64"
+    },
+    {
+      "type": "Aarch",
+      "bitness": "x32"
+    },
+    {
+      "type": "Aarch",
+      "bitness": "x64"
+    },
+    {
+      "type": "Loong",
+      "bitness": "x32"
+    },
+    {
+      "type": "Loong",
+      "bitness": "x64"
+    },
+    {
+      "type": "PowerPC",
+      "bitness": "x32"
+    },
+    {
+      "type": "PowerPC",
+      "bitness": "x64"
+    }
+  ],
+  "legacy_support": true
+}

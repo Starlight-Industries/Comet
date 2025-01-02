@@ -11,6 +11,7 @@ use rocket::post;
 use rocket::routes;
 use rocket::serde::json::Json;
 
+use crate::cli::Overrides;
 use crate::workspace::get_config;
 use crate::workspace::ServerConfig;
 #[get("/")]
@@ -34,13 +35,23 @@ fn get_package(package: Json<GetRequest>) -> Json<GetRequest> {
     Json(req)
 }
 
-pub async fn run_server(config: &ServerConfig) -> Result<()> {
+pub async fn run_server(config: &ServerConfig, overrides: Option<Overrides>) -> Result<()> {
     let log_level = &config.log_level.as_str().to_lowercase();
     println!("Starting comet server. Current log level: {log_level}");
     log::set_max_level(config.log_level);
     let _server = rocket::build()
         .configure(rocket::config::Config {
-            port: config.port,
+            port: match overrides {
+                Some(overrides) => match overrides.port {
+                    Some(port) => {
+                        println!("Overriding port to {port}");
+                        port
+                    },
+                    None => config.port,
+                    
+                },
+                None => config.port,
+            },
             ident: Ident::try_new("Comet").unwrap(),
 
             ..Default::default()
